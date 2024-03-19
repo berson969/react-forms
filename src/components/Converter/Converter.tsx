@@ -1,6 +1,9 @@
-import React, { ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 
 export const Converter: React.FC = () => {
+	useEffect(() => {
+		document.title = 'Конвертер';
+	}, []);
 
 	const [rgbColor, setRgbColor] = useState([243, 244, 246]);
 	const [stateRender, setStateRender] = useState("")

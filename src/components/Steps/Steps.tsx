@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { TrainingTable } from "./TrainingTable";
 import { TrainingForm } from "./TrainingForm";
 import { TrainingType } from "./training.ts";
@@ -12,6 +12,10 @@ const saveTrainings = (trainings: TrainingType[]) =>
 	localStorage.setItem("trainings", JSON.stringify(trainings));
 
 export const Steps: React.FC = () => {
+	useEffect(() => {
+		document.title = 'Менеджер тренировок';
+	}, []);
+
 	const [trainings, setTrainings] = useState<TrainingType[]>(getTrainings());
 
 	const addTraining = (training: TrainingType) => {

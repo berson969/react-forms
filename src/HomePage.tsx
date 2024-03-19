@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, Outlet } from "react-router-dom";
 
 export const HomePage: React.FC = () => {
+    useEffect(() => {
+        document.title = 'Home';
+    }, []);
+
     return (
         <div className="container items-center flex justify-center flex-col mx-auto bg-white">
             <div className="m-12">
