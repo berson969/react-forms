@@ -1,48 +1,63 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
 
+const isDark = (color: number[]) => {
+	const [r, g, b] = color;
+	const brightness = Math.sqrt(0.299 * r * r + 0.587 * g * g + 0.114 * b * b);
+	return brightness < 148;
+}
+
 export const Converter: React.FC = () => {
+	const [rgbColor, setRgbColor] = useState([243, 244, 246]);
+	const [stateRender, setStateRender] = useState(() => "");
+
 	useEffect(() => {
 		document.title = 'Конвертер';
 	}, []);
 
-	const [rgbColor, setRgbColor] = useState([243, 244, 246]);
-	const [stateRender, setStateRender] = useState("")
-
-
 	const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
 		const { value } = event.target;
-		console.log(value)
-		setStateRender("")
+		setStateRender( () => "" );
+		console.log("00",rgbColor, stateRender)
 		if (value.length === 7) {
 			if (/^#[0-9A-F]{6}$/i.test(value)) {
 				const r = parseInt(value.substring(1, 3), 16);
 				const g = parseInt(value.substring(3, 5), 16);
 				const b = parseInt(value.substring(5, 7), 16);
 				setRgbColor([r, g, b]);
-				setStateRender(`rgb(${rgbColor.join(', ')})`)
+				setStateRender(() => `rgb(${[r, g, b].join(', ')})`);
 			} else {
-				setStateRender('#Ошибка');
-				setRgbColor([243, 244, 246]);
+				setRgbColor([255, 0, 0]);
+				setStateRender(() => '#Ошибка');
 			}
+		} else {
+			setRgbColor([243, 244, 246])
+			setStateRender( () => "" );
 		}
 	};
+
 
 	return (
 		<div className="flex flex-col items-center justify-center min-h-screen" style={
 			{
-			backgroundColor: `rgba(${rgbColor.join(', ')}, 0.5)`}
+			backgroundColor: `rgb(${rgbColor.join(', ')}`}
 		}>
-			<div className="rounded-md">
+			<div className="relative">
 				<label htmlFor="HEX"></label>
 				<input
 					type="text"
 					id="HEX"
 					onChange={handleChange}
-					className="mb-4 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+					className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
 					placeholder="Input HEX"
 				/>
-				<div className="border rounded-md min-h-6 px-4 py-2 box-content" style={{borderColor: `rgb(${rgbColor.join(', ')})`,
-					backgroundColor: `rgba(${rgbColor.join(', ')}, 0.8)`}}>
+				<div
+					className="absolute top-16 left-0 border rounded-md w-full h-full px-4 py-2 block"
+					style={{
+						backgroundColor: "inherit",
+						background: `rgba(0, 0, 0, 0.3)`,
+						color: isDark(rgbColor) ? 'white' : 'black'
+					}}
+				>
 					{stateRender}
 				</div>
 			</div>

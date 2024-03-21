@@ -1,6 +1,4 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
-import { faker } from '@faker-js/faker';
-
 import { PhotoType } from "./PhotoType.ts";
 
 import { Images } from "./Images.tsx";
@@ -33,7 +31,7 @@ export const PhotosUploader: React.FC = () => {
 		const urls = await Promise.all(files.map((file) => fileToDataUrl(file)));
 		setPhotos(prevPhotos => [
 			...prevPhotos,
-			...urls.map((url, index) => ({ id: faker.string.uuid(), photoUrl: url, name: files[index].name }))
+			...urls.map((url, index) => ({ id: crypto.randomUUID(), photoUrl: url, name: files[index].name }))
 		]);
 		console.log("photos", photos)
 	};
